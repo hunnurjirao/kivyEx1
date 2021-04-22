@@ -4,57 +4,43 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout   
 from kivy.uix.textinput import TextInput   
 from kivy.uix.button import Button
-import os
 
-class ConnectPage(GridLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        if os.path.isfile("prev_details.txt"):
-        	with open("prev_details.txt","r") as f:
-        		d = f.read().split(",")
-
-        		prev_ip = d[0]
-        		prev_port = d[1]
-        		prev_username = d[2]
-        else:
-        	prev_ip = ""
-        	prev_port = ""
-        	prev_username = ""
-
-        self.cols = 2  
  
-        self.add_widget(Label(text='IP:'))  # widget #1, top left
-        self.ip = TextInput(text=prev_ip,multiline=False)  # defining self.ip...
-        self.add_widget(self.ip) # widget #2, top right
-
-        self.add_widget(Label(text='Port:'))
-        self.port = TextInput(text=prev_port,multiline=False)
-        self.add_widget(self.port)
-
-        self.add_widget(Label(text='Username:'))
-        self.username = TextInput(text=prev_username,multiline=False)
-        self.add_widget(self.username)
-
-        self.join = Button(text='Join')
-        self.join.bind(on_press=self.join_button)
-        self.add_widget(Label())
-        self.add_widget(self.join)
 
 
-    def join_button(self,instance):
+class Hellopage(GridLayout): 
 
-    	port = self.port.text
-    	ip = self.ip.text
-    	username = self.username.text
+		def __init__(self, **kwargs):
+			super().__init__(**kwargs)
+			
+			self.cols = 2
 
-    	with open("prev_details.txt","w") as f:
-    		f.write(f"{ip},{port},{username}")
+			self.add_widget(Label(text="Username"))
+			self.username = TextInput(multiline=False)
+			self.add_widget(self.username)
 
+			self.add_widget(Label(text="Password"))
+			self.password = TextInput(password=True,multiline=False)
+			self.add_widget(self.password)
+			
+			self.press = Button(text="Click me")
+			self.press.bind(on_press=self.click_me)
+			self.add_widget(Label())
+			self.add_widget(self.press)
+
+
+		def click_me(self,instance):
+
+			print(f"Username = {self.username.text}\nPassword = {self.password.text}")
+
+
+
+
+				
 
 class EpicApp(App):
     def build(self):
-        return ConnectPage()
+        return Hellopage()
 
 
 if __name__ == "__main__":
